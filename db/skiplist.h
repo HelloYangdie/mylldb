@@ -8,48 +8,16 @@
 
 namespace leveldb {
 
+template<typename Key, class Comparator>
 class SkipList
 {
 private:
-	struct Node
-	{
-		int const key;
-
-		explicit Node(int k) : key(k){}
-
-		Node* Next(int n) { return next_[n];}
-
-		void SetNext(int n, Node* node) { next_[n] = node;}
-
-	private:
-		Node* next_[1];
-	};
+	struct Node;
 
 public:
-	explicit SkipList() : head_( NewNode( 0, kMaxHeight)),max_height_(1), rnd_(0xdeadbeef){}
+	explicit SkipList(Comparator cmp);
 
-	void Insert(int key)
-	{
-		Node* prev[kMaxHeight];
-		Node* x = FindGreaterOrEqual(key, prev);
-		int height = RandomHeight();
-		if (height > GetMaxHeight())
-		{
-			for (int i = GetMaxHeight(); i < height; i++)
-			{
-				prev[i] = head_;
-			}
-
-			max_height_ = height;
-		}
-
-		x = NewNode(key, height);
-		for (int i = 0; i < height; i++)
-		{
-			x->SetNext(i, prev[i]->Next(i));
-			prev[i]->SetNext(i, x);
-		}
-	}
+	void Insert(Key key);
 
 	bool Contains(int key) const
 	{
@@ -109,127 +77,194 @@ public:
 private:
 	enum {kMaxHeight = 12};
 	
+	Comparator const compare_;
 	Node* const head_;
 	int max_height_;
 	Random rnd_;
 
 	int GetMaxHeight() const { return max_height_;}
 	
-	Node* NewNode(int key, int height)
-	{
-		int size = sizeof(Node) + sizeof(Node*) * (height - 1);
-		char* mem = new char[size];
-		memset(mem, 0x00, size);
+	Node* NewNode(Key key, int height);
 
-		return new (mem) Node(key);
+	int RandomHeight();
+
+	bool KeyIsAfterNode(Key key, Node* node) const
+	{
+		return (node != NULL && (compare_(node->key, key) < 0));
 	}
 
-	int RandomHeight()
-	{
-		static const uint32_t kBranching = 4;
-		int height = 1;
-
-		while (height < kMaxHeight && ((rnd_.Next() % kBranching) == 0))
-		{
-			height++;
-		}
-
-		return height;
-	}
-
-	bool KeyIsAfterNode(int key, Node* node) const
-	{
-		return (node != NULL && (node->key < key));
-	}
-
-	Node* FindGreaterOrEqual(int key, Node** prev) const
-	{
-		Node* x = head_;
-		int level = GetMaxHeight() - 1;
-
-		while (true)
-		{
-			Node* next = x->Next(level);
-			if (KeyIsAfterNode(key, next))
-			{
-				x = next;
-			}
-			else
-			{
-				if (prev != NULL) prev[level] = x;
-				if (level == 0) 
-				{
-					return next;
-				}
-				else
-				{
-					level--;
-				}
-			}
-		}
-	}
-
-	Node* FindLessThan(int key) const
-	{
-		Node* x= head_;
-		int level = GetMaxHeight() - 1;
-
-		while (true)
-		{
-			Node* next = x->Next(level);
-			if (next == NULL || next->key >= key)
-			{
-				if (level == 0)
-				{
-					return x;
-				}
-				else
-				{
-					level--;
-				}
-			}
-			else
-			{
-				x = next;
-			}
-		}
-	}
-
-	Node* FindLast() const
-	{
-		Node* x = head_;
-		int level = GetMaxHeight() - 1;
-
-		while (true)
-		{
-			Node* next = x->Next(level);
-			if (next == NULL)
-			{
-				if (level == 0)
-				{
-					return x;
-				}
-				else
-				{
-					level--;
-				}
-			}
-			else
-			{
-				x = next;
-			}
-		}
-	}
+	Node* FindGreaterOrEqual(Key key, Node** prev) const;
 
 
-	bool Equal(int a, int b) const { return a == b;}
+	Node* FindLessThan(Key key) const;
 
-	
+	Node* FindLast() const;
+
+	bool Equal(int a, int b) const { return compare_(a, b) == 0;}
 
 	SkipList(const SkipList&);
 	void operator=(const SkipList&);
 };
 
+template<typename Key, class Comparator>
+struct SkipList<Key, Comparator>::Node
+{
+	Key const key;
+
+	explicit Node(Key k) : key(k){}
+
+	Node* Next(int n) { return next_[n];}
+
+	void SetNext(int n, Node* node) { next_[n] = node;}
+private:
+	Node* next_[1];
+};
+
+template<typename Key, class Comparator>
+SkipList<Key, Comparator>::SkipList(Comparator cmp) 
+	 : head_(NewNode( 0, kMaxHeight)),
+	 compare_(cmp),
+	 max_height_(1), 
+	 rnd_(0xdeadbeef)
+{
+	for (int i = 0; i < kMaxHeight; i++)
+	{
+		head_->SetNext(i, NULL);
+	}
+}
+
+template<typename Key, class Comparator>
+void SkipList<Key, Comparator>::Insert(Key key)
+{
+	Node* prev[kMaxHeight];
+	Node* x = FindGreaterOrEqual(key, prev);
+	int height = RandomHeight();
+	if (height > GetMaxHeight())
+	{
+		for (int i = GetMaxHeight(); i < height; i++)
+		{
+			prev[i] = head_;
+		}
+
+		max_height_ = height;
+	}
+
+	x = NewNode(key, height);
+	for (int i = 0; i < height; i++)
+	{
+		x->SetNext(i, prev[i]->Next(i));
+		prev[i]->SetNext(i, x);
+	}
+}
+
+template<typename Key, class Comparator>
+typename SkipList<Key, Comparator>::Node* 
+SkipList<Key, Comparator>::NewNode(Key key, int height)
+{
+	int size = sizeof(Node) + sizeof(Node*) * (height - 1);
+	char* mem = new char[size];
+
+	return new (mem) Node(key);
+}
+
+template<typename Key, class Comparator>
+int SkipList<Key, Comparator>::RandomHeight()
+{
+	static const uint32_t kBranching = 4;
+	int height = 1;
+
+	while (height < kMaxHeight && ((rnd_.Next() % kBranching) == 0))
+	{
+		height++;
+	}
+
+	return height;
+}
+
+template<typename Key, class Comparator>
+typename SkipList<Key, Comparator>::Node* 
+SkipList<Key, Comparator>::FindGreaterOrEqual(Key key, Node** prev) const
+{
+	Node* x = head_;
+	int level = GetMaxHeight() - 1;
+
+	while (true)
+	{
+		Node* next = x->Next(level);
+		if (KeyIsAfterNode(key, next))
+		{
+			x = next;
+		}
+		else
+		{
+			if (prev != NULL) prev[level] = x;
+			if (level == 0) 
+			{
+				return next;
+			}
+			else
+			{
+				level--;
+			}
+		}
+	}
+}
+
+template<typename Key, class Comparator>
+typename SkipList<Key, Comparator>::Node* 
+SkipList<Key, Comparator>::FindLessThan(Key key) const
+{
+	Node* x= head_;
+	int level = GetMaxHeight() - 1;
+
+	while (true)
+	{
+		Node* next = x->Next(level);
+		if (next == NULL || compare_(next->key, key) >= 0)
+		{
+			if (level == 0)
+			{
+				return x;
+			}
+			else
+			{
+				level--;
+			}
+		}
+		else
+		{
+			x = next;
+		}
+	}
+}
+
+template<typename Key, class Comparator>
+typename SkipList<Key, Comparator>::Node* 
+SkipList<Key, Comparator>::FindLast() const
+{
+	Node* x = head_;
+	int level = GetMaxHeight() - 1;
+
+	while (true)
+	{
+		Node* next = x->Next(level);
+		if (next == NULL)
+		{
+			if (level == 0)
+			{
+				return x;
+			}
+			else
+			{
+				level--;
+			}
+		}
+		else
+		{
+			x = next;
+		}
+	}
+}
 
 }
 
