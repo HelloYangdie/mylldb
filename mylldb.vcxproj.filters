@@ -32,5 +32,14 @@
     <ClInclude Include="test\test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="port\atomic_pointer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="port\port_posix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="port\port.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

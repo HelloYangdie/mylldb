@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <string>
+#include "port/port.h"
 #include "util/random.h"
 
 namespace leveldb {
@@ -79,10 +80,10 @@ private:
 	
 	Comparator const compare_;
 	Node* const head_;
-	int max_height_;
+	port::AtomicPointer max_height_;
 	Random rnd_;
 
-	int GetMaxHeight() const { return max_height_;}
+	int GetMaxHeight() const { return static_cast<int>(reinterpret_cast<intptr_t>(max_height_.NoBarrierLoad()));}
 	
 	Node* NewNode(Key key, int height);
 
@@ -124,7 +125,7 @@ template<typename Key, class Comparator>
 SkipList<Key, Comparator>::SkipList(Comparator cmp) 
 	 : head_(NewNode( 0, kMaxHeight)),
 	 compare_(cmp),
-	 max_height_(1), 
+	 max_height_(reinterpret_cast<void*>(1)), 
 	 rnd_(0xdeadbeef)
 {
 	for (int i = 0; i < kMaxHeight; i++)
@@ -146,7 +147,7 @@ void SkipList<Key, Comparator>::Insert(Key key)
 			prev[i] = head_;
 		}
 
-		max_height_ = height;
+		max_height_.NoBarrierStore(reinterpret_cast<void*>(height));
 	}
 
 	x = NewNode(key, height);
