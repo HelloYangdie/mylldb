@@ -1,0 +1,7 @@
+
+#ifndef STORAGE_LEVELDB_TEST_TEST_H_
+#define STORAGE_LEVELDB_TEST_TEST_H_
+
+extern void SkipListTest();
+
+#endif
