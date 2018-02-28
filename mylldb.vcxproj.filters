@@ -41,5 +41,17 @@
     <ClInclude Include="port\port.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="db\dbformat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\comparator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\slice.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\export.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

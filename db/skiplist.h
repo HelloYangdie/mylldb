@@ -18,9 +18,9 @@ private:
 public:
 	explicit SkipList(Comparator cmp);
 
-	void Insert(Key key);
+	void Insert(const Key& key);
 
-	bool Contains(int key) const
+	bool Contains(const Key& key) const
 	{
 		Node* x = FindGreaterOrEqual(key, NULL);
 		if (x != NULL && Equal(key, x->key))
@@ -43,7 +43,7 @@ public:
 
 		bool Valid() const { return node_ != NULL;}
 
-		const int key() const { assert(Valid()); return node_->key;}
+		const Key key() const { assert(Valid()); return node_->key;}
 
 		void Next() { assert(Valid()); node_ = node_->Next(0);}
 
@@ -57,7 +57,7 @@ public:
 			}
 		}
 
-		void Seek(int target) {node_ = list_->FindGreaterOrEqual(target, NULL);}
+		void Seek(const Key& target) {node_ = list_->FindGreaterOrEqual(target, NULL);}
 
 		void SeekToFirst() {node_ = list_->head_->Next(0);}
 
@@ -85,23 +85,23 @@ private:
 
 	int GetMaxHeight() const { return static_cast<int>(reinterpret_cast<intptr_t>(max_height_.NoBarrierLoad()));}
 	
-	Node* NewNode(Key key, int height);
+	Node* NewNode(const Key& key, int height);
 
 	int RandomHeight();
 
-	bool KeyIsAfterNode(Key key, Node* node) const
+	bool KeyIsAfterNode(const Key& key, Node* node) const
 	{
 		return (node != NULL && (compare_(node->key, key) < 0));
 	}
 
-	Node* FindGreaterOrEqual(Key key, Node** prev) const;
+	Node* FindGreaterOrEqual(const Key& key, Node** prev) const;
 
 
-	Node* FindLessThan(Key key) const;
+	Node* FindLessThan(const Key& key) const;
 
 	Node* FindLast() const;
 
-	bool Equal(int a, int b) const { return compare_(a, b) == 0;}
+	bool Equal(const Key& a, const Key& b) const { return compare_(a, b) == 0;}
 
 	SkipList(const SkipList&);
 	void operator=(const SkipList&);
@@ -112,7 +112,7 @@ struct SkipList<Key, Comparator>::Node
 {
 	Key const key;
 
-	explicit Node(Key k) : key(k){}
+	explicit Node(const Key& k) : key(k){}
 
 	Node* Next(int n) { return next_[n];}
 
@@ -135,7 +135,7 @@ SkipList<Key, Comparator>::SkipList(Comparator cmp)
 }
 
 template<typename Key, class Comparator>
-void SkipList<Key, Comparator>::Insert(Key key)
+void SkipList<Key, Comparator>::Insert(const Key& key)
 {
 	Node* prev[kMaxHeight];
 	Node* x = FindGreaterOrEqual(key, prev);
@@ -160,7 +160,7 @@ void SkipList<Key, Comparator>::Insert(Key key)
 
 template<typename Key, class Comparator>
 typename SkipList<Key, Comparator>::Node* 
-SkipList<Key, Comparator>::NewNode(Key key, int height)
+SkipList<Key, Comparator>::NewNode(const Key& key, int height)
 {
 	int size = sizeof(Node) + sizeof(Node*) * (height - 1);
 	char* mem = new char[size];
@@ -184,7 +184,7 @@ int SkipList<Key, Comparator>::RandomHeight()
 
 template<typename Key, class Comparator>
 typename SkipList<Key, Comparator>::Node* 
-SkipList<Key, Comparator>::FindGreaterOrEqual(Key key, Node** prev) const
+SkipList<Key, Comparator>::FindGreaterOrEqual(const Key& key, Node** prev) const
 {
 	Node* x = head_;
 	int level = GetMaxHeight() - 1;
@@ -213,7 +213,7 @@ SkipList<Key, Comparator>::FindGreaterOrEqual(Key key, Node** prev) const
 
 template<typename Key, class Comparator>
 typename SkipList<Key, Comparator>::Node* 
-SkipList<Key, Comparator>::FindLessThan(Key key) const
+SkipList<Key, Comparator>::FindLessThan(const Key& key) const
 {
 	Node* x= head_;
 	int level = GetMaxHeight() - 1;

@@ -80,7 +80,11 @@
     <ClCompile Include="test\skiplist_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="db\dbformat.h" />
     <ClInclude Include="db\skiplist.h" />
+    <ClInclude Include="include\leveldb\comparator.h" />
+    <ClInclude Include="include\leveldb\export.h" />
+    <ClInclude Include="include\leveldb\slice.h" />
     <ClInclude Include="port\atomic_pointer.h" />
     <ClInclude Include="port\port.h" />
     <ClInclude Include="port\port_posix.h" />

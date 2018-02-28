@@ -1,37 +1,46 @@
 #include <iostream>
 #include "db/skiplist.h"
+#include "include/leveldb/slice.h"
 
-struct IntComparator
+struct StringComparator
 {
-	int operator()(int a, int b) const
+	int operator()(const leveldb::Slice* a, const leveldb::Slice* b) const
 	{
-		if (a > b) return 1;
-		else if (a< b) return -1;
-		else return 0;
+		return a->compare(*b);
 	}
 };
 
 void SkipListTest()
 {
-	IntComparator cmp;
-	leveldb::SkipList<int, IntComparator> list(cmp);
+	StringComparator cmp;
+	leveldb::SkipList<leveldb::Slice*, StringComparator> list(cmp);
 
-	list.Insert(100);
-	list.Insert(10);
-	list.Insert(9);
-	list.Insert(20);
-	list.Insert(700);
-	list.Insert(110);
-	list.Insert(19);
-	list.Insert(300);
-	list.Insert(200);
-	list.Insert(111);
+	char* str = "hell100";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell10";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell9";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell20";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell700";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell110";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell19";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell300";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell200";
+	list.Insert(new leveldb::Slice(str));
+	str = "hell111";
+	list.Insert(new leveldb::Slice(str));
 
-	leveldb::SkipList<int, IntComparator>::Iterator it(&list);
+	leveldb::SkipList<leveldb::Slice*, StringComparator>::Iterator it(&list);
 
 	for (it.SeekToFirst(); it.Valid(); it.Next())
 	{
-		std::cout << it.key() << ";";
+		std::cout << it.key()->ToString() << ";";
 	}
 
 	std::cout << std::endl;

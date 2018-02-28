@@ -5,13 +5,7 @@
 
 int main()
 {
-	//SkipListTest();
-
-#if defined(_MSC_VER)
-	std::cout << "OS_WIN" << " " << "COMPILER_MSVC" << std::endl;
-#else
-	std::cout << " not " << "OS_WIN" << " " << "COMPILER_MSVC" << std::endl;
-#endif
+	SkipListTest();
 
 	system("pause");
 	return 0;
