@@ -21,6 +21,9 @@
     <ClCompile Include="test\skiplist_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="util\arena.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\skiplist.h">
@@ -51,6 +54,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\leveldb\export.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util\arena.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,29 +12,46 @@ struct StringComparator
 
 void SkipListTest()
 {
+	leveldb::Arena arena;
 	StringComparator cmp;
-	leveldb::SkipList<leveldb::Slice*, StringComparator> list(cmp);
+	leveldb::SkipList<leveldb::Slice*, StringComparator> list(cmp, &arena);
 
-	char* str = "hell100";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell10";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell9";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell20";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell700";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell110";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell19";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell300";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell200";
-	list.Insert(new leveldb::Slice(str));
-	str = "hell111";
-	list.Insert(new leveldb::Slice(str));
+	int size = 8;
+	char* str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell100",size);
+	leveldb::Slice s1(str);
+	list.Insert(&s1);
+
+	str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell10",size);
+	leveldb::Slice s2(str);
+	list.Insert(&s2);
+
+	str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell9",size);
+	leveldb::Slice s3(str);
+	list.Insert(&s3);
+
+	str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell20",size);
+	leveldb::Slice s4(str);
+	list.Insert(&s4);
+
+	str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell700",size);
+	leveldb::Slice s5(str);
+	list.Insert(&s5);
+
+	str = arena.Allocate(size);
+	memset(str, 0x00, size);
+	memcpy(str,"hell110",size);
+	leveldb::Slice s6(str);
+	list.Insert(&s6);
 
 	leveldb::SkipList<leveldb::Slice*, StringComparator>::Iterator it(&list);
 

@@ -6,6 +6,7 @@
 #include <string>
 #include "port/port.h"
 #include "util/random.h"
+#include "util/arena.h"
 
 namespace leveldb {
 
@@ -16,7 +17,7 @@ private:
 	struct Node;
 
 public:
-	explicit SkipList(Comparator cmp);
+	explicit SkipList(Comparator cmp, Arena* arena);
 
 	void Insert(const Key& key);
 
@@ -79,6 +80,7 @@ private:
 	enum {kMaxHeight = 12};
 	
 	Comparator const compare_;
+	Arena* arena_;
 	Node* const head_;
 	port::AtomicPointer max_height_;
 	Random rnd_;
@@ -122,9 +124,10 @@ private:
 };
 
 template<typename Key, class Comparator>
-SkipList<Key, Comparator>::SkipList(Comparator cmp) 
+SkipList<Key, Comparator>::SkipList(Comparator cmp,Arena* arena) 
 	 : head_(NewNode( 0, kMaxHeight)),
 	 compare_(cmp),
+	 arena_(arena),
 	 max_height_(reinterpret_cast<void*>(1)), 
 	 rnd_(0xdeadbeef)
 {
@@ -163,7 +166,7 @@ typename SkipList<Key, Comparator>::Node*
 SkipList<Key, Comparator>::NewNode(const Key& key, int height)
 {
 	int size = sizeof(Node) + sizeof(Node*) * (height - 1);
-	char* mem = new char[size];
+	char* mem = arena_->Allocate(size);
 
 	return new (mem) Node(key);
 }

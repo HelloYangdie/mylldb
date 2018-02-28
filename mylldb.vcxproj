@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
+    <ClCompile Include="util\arena.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\dbformat.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="port\port.h" />
     <ClInclude Include="port\port_posix.h" />
     <ClInclude Include="test\test.h" />
+    <ClInclude Include="util\arena.h" />
     <ClInclude Include="util\random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
