@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,21 +76,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="db\dbformat.cpp" />
+    <ClCompile Include="db\memtable.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="test\memtable_test.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
     <ClCompile Include="util\arena.cpp" />
+    <ClCompile Include="util\coding.cpp" />
+    <ClCompile Include="util\status.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\dbformat.h" />
+    <ClInclude Include="db\memtable.h" />
     <ClInclude Include="db\skiplist.h" />
     <ClInclude Include="include\leveldb\comparator.h" />
+    <ClInclude Include="include\leveldb\db.h" />
     <ClInclude Include="include\leveldb\export.h" />
+    <ClInclude Include="include\leveldb\iterator.h" />
     <ClInclude Include="include\leveldb\slice.h" />
+    <ClInclude Include="include\leveldb\status.h" />
     <ClInclude Include="port\atomic_pointer.h" />
     <ClInclude Include="port\port.h" />
     <ClInclude Include="port\port_posix.h" />
     <ClInclude Include="test\test.h" />
     <ClInclude Include="util\arena.h" />
+    <ClInclude Include="util\coding.h" />
     <ClInclude Include="util\random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

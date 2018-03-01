@@ -4,4 +4,6 @@
 
 extern void SkipListTest();
 
+extern void MemTableTest();
+
 #endif

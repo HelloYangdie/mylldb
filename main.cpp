@@ -5,7 +5,9 @@
 
 int main()
 {
-	SkipListTest();
+	//SkipListTest();
+
+	MemTableTest();
 
 	system("pause");
 	return 0;

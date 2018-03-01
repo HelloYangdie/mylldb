@@ -3,4 +3,9 @@
 
 #include "port/atomic_pointer.h"
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf_s 
+
+#endif
+
 #endif
