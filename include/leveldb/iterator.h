@@ -47,7 +47,7 @@ private:
 
 	Iterator(const Iterator&);
 	void operator=(const Iterator&);
-}
+};
 
 }
 

@@ -12,6 +12,43 @@ static Slice GetLengthPrefixedSlice(const char* data) {
 	return Slice(p, len);
 }
 
+static const char* EncodeKey(std::string* scratch, const Slice& target) {
+	scratch->clear();
+	PutVarint32(scratch, target.size());
+	scratch->append(target.data(), target.size());
+	return scratch->data();
+}
+
+class MemTableIterator : public Iterator
+{
+public:
+	explicit MemTableIterator(MemTable::Table* table) : iter_(table) { }
+
+	virtual bool Valid() const{ return iter_.Valid();}
+
+	virtual void SeekToFirst() {iter_.SeekToFirst();}
+
+	virtual void SeekToLast() { iter_.SeekToLast(); }
+
+	virtual void Seek(const Slice& target) { iter_.Seek(EncodeKey(&tmp_, target));}
+
+	virtual void Next() { iter_.Next(); }
+
+	virtual void Prev() { iter_.Prev(); }
+
+	virtual Slice key() const  { return GetLengthPrefixedSlice(iter_.key()); }
+
+	virtual Slice value() const {
+		Slice key_slice = GetLengthPrefixedSlice(iter_.key());
+		return GetLengthPrefixedSlice(key_slice.data() + key_slice.size());
+	}
+
+	virtual Status status() const { return Status::OK(); }
+private:
+	MemTable::Table::Iterator iter_;
+	std::string tmp_;
+};
+
 MemTable::MemTable(const InternalKeyComparator& cmp) 
 	: table_(comparator_, &arena_),
 	comparator_(cmp)
@@ -94,6 +131,11 @@ bool MemTable::Get(const LookupKey& key, std::string* value, Status* s)
 	}
 
 	return false;
+}
+
+Iterator* MemTable::NewIterator()
+{
+	return new MemTableIterator(&table_);
 }
 
 }

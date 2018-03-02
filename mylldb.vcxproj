@@ -79,6 +79,7 @@
     <ClCompile Include="db\dbformat.cpp" />
     <ClCompile Include="db\memtable.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="table\iterator.cpp" />
     <ClCompile Include="test\memtable_test.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
     <ClCompile Include="util\arena.cpp" />

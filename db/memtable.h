@@ -4,11 +4,12 @@
 #include <string.h>
 #include "db/dbformat.h"
 #include "db/skiplist.h"
-#include "include/leveldb/slice.h"
-#include "include/leveldb/status.h"
+#include "include/leveldb/db.h"
 
 namespace leveldb
 {
+
+class MemTableIterator;
 
 class MemTable
 {
@@ -22,6 +23,8 @@ public:
 
 	bool Get(const LookupKey& key, std::string* value, Status* s);
 
+	Iterator* NewIterator();
+
 private:
 	struct KeyComparator
 	{
@@ -29,6 +32,8 @@ private:
 		explicit KeyComparator(const InternalKeyComparator& c) : comparator(c) { }
 		int operator()(const char* a, const char* b) const;
 	};
+
+	friend class MemTableIterator;
 
 	typedef SkipList<const char*, KeyComparator> Table;
 

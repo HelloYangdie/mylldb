@@ -39,6 +39,9 @@
     <ClCompile Include="test\memtable_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="table\iterator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\skiplist.h">
