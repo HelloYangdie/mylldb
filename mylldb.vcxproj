@@ -76,17 +76,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="port\port_win.cpp" />
+    <ClCompile Include="table\block.cpp" />
     <ClCompile Include="db\dbformat.cpp" />
     <ClCompile Include="db\memtable.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="table\block_builder.cpp" />
     <ClCompile Include="table\iterator.cpp" />
     <ClCompile Include="test\memtable_test.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
     <ClCompile Include="util\arena.cpp" />
     <ClCompile Include="util\coding.cpp" />
+    <ClCompile Include="util\comparator.cpp" />
     <ClCompile Include="util\status.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="port\port_win.h" />
+    <ClInclude Include="table\block.h" />
     <ClInclude Include="db\dbformat.h" />
     <ClInclude Include="db\memtable.h" />
     <ClInclude Include="db\skiplist.h" />
@@ -94,11 +100,14 @@
     <ClInclude Include="include\leveldb\db.h" />
     <ClInclude Include="include\leveldb\export.h" />
     <ClInclude Include="include\leveldb\iterator.h" />
+    <ClInclude Include="include\leveldb\options.h" />
     <ClInclude Include="include\leveldb\slice.h" />
     <ClInclude Include="include\leveldb\status.h" />
     <ClInclude Include="port\atomic_pointer.h" />
     <ClInclude Include="port\port.h" />
     <ClInclude Include="port\port_posix.h" />
+    <ClInclude Include="table\block_builder.h" />
+    <ClInclude Include="table\format.h" />
     <ClInclude Include="test\test.h" />
     <ClInclude Include="util\arena.h" />
     <ClInclude Include="util\coding.h" />

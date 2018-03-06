@@ -42,6 +42,18 @@
     <ClCompile Include="table\iterator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="table\block_builder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="table\block.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util\comparator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="port\port_win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\skiplist.h">
@@ -90,6 +102,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="util\coding.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="table\block_builder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\options.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="table\block.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="table\format.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="port\port_win.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

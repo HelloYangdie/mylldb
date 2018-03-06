@@ -49,6 +49,12 @@ private:
 	void operator=(const Iterator&);
 };
 
+// Return an empty iterator (yields nothing).
+LEVELDB_EXPORT Iterator* NewEmptyIterator();
+
+// Return an empty iterator with the specified status.
+LEVELDB_EXPORT Iterator* NewErrorIterator(const Status& status);
+
 }
 
 #endif

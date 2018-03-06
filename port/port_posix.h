@@ -3,9 +3,11 @@
 
 #include "port/atomic_pointer.h"
 
-#if defined(_MSC_VER)
-#define snprintf _snprintf_s 
+namespace leveldb{
+namespace port {
 
-#endif
+}
+
+}
 
 #endif

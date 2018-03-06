@@ -36,4 +36,30 @@ void Iterator::RegisterCleanup(CleanupFunction func, void* arg1, void* arg2) {
 	c->arg2 = arg2;
 }
 
+namespace {
+	class EmptyIterator : public Iterator {
+	public:
+		EmptyIterator(const Status& s) : status_(s) { }
+		virtual bool Valid() const { return false; }
+		virtual void Seek(const Slice& target) { }
+		virtual void SeekToFirst() { }
+		virtual void SeekToLast() { }
+		virtual void Next() { assert(false); }
+		virtual void Prev() { assert(false); }
+		Slice key() const { assert(false); return Slice(); }
+		Slice value() const { assert(false); return Slice(); }
+		virtual Status status() const { return status_; }
+	private:
+		Status status_;
+	};
+}  // namespace
+
+Iterator* NewEmptyIterator() {
+	return new EmptyIterator(Status::OK());
+}
+
+Iterator* NewErrorIterator(const Status& status) {
+	return new EmptyIterator(status);
+}
+
 }
