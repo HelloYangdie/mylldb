@@ -129,4 +129,20 @@ const char* GetVarint32PtrFallback(const char* p, const char* limit, uint32_t* v
 	return NULL;
 }
 
+bool GetVarint32(Slice* input, uint32_t* value) 
+{
+	const char* p = input->data();
+	const char* limit = p + input->size();
+	const char* q = GetVarint32Ptr(p, limit, value);
+	if (q == NULL) {
+		return false;
+	} else {
+		*input = Slice(q, limit - q);
+		return true;
+	}
+}
+
+extern bool GetVarint64(Slice* input, uint64_t* value);
+extern bool GetLengthPrefixedSlice(Slice* input, Slice* result);
+
 }

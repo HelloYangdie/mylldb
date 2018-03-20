@@ -39,6 +39,10 @@ inline uint64_t DecodeFixed64(const char* ptr)
 	return result;
 }
 
+extern bool GetVarint32(Slice* input, uint32_t* value);
+extern bool GetVarint64(Slice* input, uint64_t* value);
+extern bool GetLengthPrefixedSlice(Slice* input, Slice* result);
+
 extern const char* GetVarint32PtrFallback(const char* p, const char* limit, uint32_t* value);
 
 inline const char* GetVarint32Ptr(const char* p, const char* limit, uint32_t* value)

@@ -82,15 +82,21 @@
     <ClCompile Include="db\memtable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="table\block_builder.cpp" />
+    <ClCompile Include="table\format.cpp" />
     <ClCompile Include="table\iterator.cpp" />
+    <ClCompile Include="table\table_builder.cpp" />
     <ClCompile Include="test\memtable_test.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
     <ClCompile Include="util\arena.cpp" />
     <ClCompile Include="util\coding.cpp" />
     <ClCompile Include="util\comparator.cpp" />
+    <ClCompile Include="util\crc32c.cpp" />
     <ClCompile Include="util\status.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\leveldb\env.h" />
+    <ClInclude Include="include\leveldb\filter_policy.h" />
+    <ClInclude Include="include\leveldb\table_builder.h" />
     <ClInclude Include="port\port_win.h" />
     <ClInclude Include="table\block.h" />
     <ClInclude Include="db\dbformat.h" />
@@ -107,10 +113,12 @@
     <ClInclude Include="port\port.h" />
     <ClInclude Include="port\port_posix.h" />
     <ClInclude Include="table\block_builder.h" />
+    <ClInclude Include="table\filter_block.h" />
     <ClInclude Include="table\format.h" />
     <ClInclude Include="test\test.h" />
     <ClInclude Include="util\arena.h" />
     <ClInclude Include="util\coding.h" />
+    <ClInclude Include="util\crc32c.h" />
     <ClInclude Include="util\random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

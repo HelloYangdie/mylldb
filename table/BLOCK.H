@@ -29,7 +29,6 @@ private:
 	 bool owned_;
 
 	 Block(const Block&);
-
 	 void operator=(const Block&);
 
 	 class Iter;

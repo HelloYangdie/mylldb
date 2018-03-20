@@ -54,6 +54,15 @@
     <ClCompile Include="port\port_win.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="table\table_builder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util\crc32c.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="table\format.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\skiplist.h">
@@ -117,6 +126,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="port\port_win.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\env.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\filter_policy.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\table_builder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="table\filter_block.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util\crc32c.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
