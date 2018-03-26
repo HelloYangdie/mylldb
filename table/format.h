@@ -76,6 +76,11 @@ private:
 	BlockHandle index_handle_;
 };
 
+extern Status ReadBlock(RandomAccessFile* file, 
+					const ReadOptions& options,
+					const BlockHandle& handle, 
+					BlockContents* result);
+
 }
 
 #endif

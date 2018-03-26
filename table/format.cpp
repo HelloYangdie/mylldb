@@ -1,6 +1,7 @@
 #include "table/format.h"
 
 #include "include/leveldb/env.h"
+#include "include/leveldb/options.h"
 #include "port/port.h"
 #include "table/block.h"
 #include "util/coding.h"
@@ -56,6 +57,65 @@ Status Footer::DecodeFrom(Slice* input) {
     *input = Slice(end, input->data() + input->size() - end);
   }
   return result;
+}
+
+Status ReadBlock(RandomAccessFile* file, 
+				const ReadOptions& options,
+				const BlockHandle& handle, 
+				BlockContents* result)
+{
+	result->cachable = false;
+	result->data = Slice();
+	result->heap_allocated = false;
+
+	size_t n = static_cast<size_t>(handle.size());
+	char* buf = new char[n + kBlockTrailerSize];
+	Slice contents;
+	Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+	if (!s.ok()) {
+		delete[] buf;
+		return s;
+	}
+	if (contents.size() != n + kBlockTrailerSize) {
+		delete[] buf;
+		return Status::Corruption("truncated block read");
+	}
+
+	const char* data = contents.data();
+	if (options.verify_checksums) {
+		const uint32_t crc = crc32c::Unmask(DecodeFixed32(data + n + 1));
+		const uint32_t actual = crc32c::Value(data, n + 1);
+		if (actual != crc) {
+			delete[] buf;
+			s = Status::Corruption("block checksum mismatch");
+			return s;
+		}
+	}
+
+	CompressionType type = static_cast<CompressionType>(data[n]);
+	switch (type)
+	{
+	case kNoCompression:
+		if (data != buf)
+		{
+			delete[] buf;
+			result->data = Slice(data, n);
+			result->heap_allocated = false;
+			result->cachable = false;
+		}
+		else {
+			result->data = Slice(buf, n);
+			result->heap_allocated = true;
+			result->cachable = true;
+		}
+		break;
+	case kSnappyCompression:
+		break;
+	default:
+		delete[] buf;
+		return Status::Corruption("bad block type");
+	}
+	return Status::OK();
 }
 
 }  // namespace leveldb

@@ -84,6 +84,7 @@
     <ClCompile Include="table\block_builder.cpp" />
     <ClCompile Include="table\format.cpp" />
     <ClCompile Include="table\iterator.cpp" />
+    <ClCompile Include="table\table.cpp" />
     <ClCompile Include="table\table_builder.cpp" />
     <ClCompile Include="test\memtable_test.cpp" />
     <ClCompile Include="test\skiplist_test.cpp" />
@@ -94,8 +95,11 @@
     <ClCompile Include="util\status.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="db\table_cache.h" />
+    <ClInclude Include="include\leveldb\cache.h" />
     <ClInclude Include="include\leveldb\env.h" />
     <ClInclude Include="include\leveldb\filter_policy.h" />
+    <ClInclude Include="include\leveldb\table.h" />
     <ClInclude Include="include\leveldb\table_builder.h" />
     <ClInclude Include="port\port_win.h" />
     <ClInclude Include="table\block.h" />

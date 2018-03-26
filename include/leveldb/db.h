@@ -8,7 +8,10 @@
 namespace leveldb 
 {
 
-
+class LEVELDB_EXPORT Snapshot {
+protected:
+	virtual ~Snapshot();
+};
 
 }
 

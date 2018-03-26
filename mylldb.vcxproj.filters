@@ -63,6 +63,9 @@
     <ClCompile Include="table\format.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="table\table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="db\skiplist.h">
@@ -141,6 +144,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="util\crc32c.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\table.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="db\table_cache.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\leveldb\cache.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

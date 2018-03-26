@@ -238,5 +238,19 @@ Status TableBuilder::Finish()
 
 }
 
+void TableBuilder::Abandon() {
+	Rep* r = rep_;
+	assert(!r->closed);
+	r->closed = true;
+}
+
+uint64_t TableBuilder::NumEntries() const {
+	return rep_->num_entries;
+}
+
+uint64_t TableBuilder::FileSize() const {
+	return rep_->offset;
+}
+
 }
 
